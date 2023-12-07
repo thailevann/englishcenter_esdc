@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khóa học đã đăng ký</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/capnhatlichday.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+</head>
+<body>
+ 
+  <div class="tm-container">
+    <div class="tm-row">
+      <!-- Site Header -->
+      <div class="tm-left">
+        <div class="tm-left-inner">
+          <div class="tm-site-header">
+            <h1 class="tm-site-name">Xin chào giáo viên</h1>
+          </div>
+          <nav class="tm-site-nav">
+            <ul class="tm-site-nav-ul">
+              <li class="tm-page-nav-item">
+                <a  class="tm-page-link active">
+                  <span>Xem lịch giảng dạy</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="{{ url_for('capnhatlichday') }}" class="tm-page-link">
+                  <span>Khóa học đã đăng ký</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="{{ url_for('dangkylichday') }}" class="tm-page-link">
+                  <span>Đăng ký lịch dạy</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div> 
+        
+      </div>
+      <div class="tm-right">
+        <main class="tm-main">
+          <div id="cold" class="tm-tab-content">
+          <!-- Contact Page -->
+          <div id="contact" class="tm-page-content">
+                <h2 class="tm-text-primary"></h2>
+                {%if ischeck != '0' %}
+                <div class="tm-list">
+                    <div style="margin-left: -5rem !important;" class = "container mt-5 tm-list">
+                    <table id="data-table" class="table table-striped" >
+                        {{ table | safe }}
+                    </table>
+                </div>
+                </div>
+                {%else%}
+                <div class="tm-black-bg tm-contact-text-container">
+                <h2 class="tm-text-primary">Thông báo</h2>
+                <p>{{mess}}</p>
+                </div>
+                {% endif %}    
+                </div>
+        </main>
+        <style>
+            .table {
+        background-color: #af9e9e; /* Màu xám nhạt */
+}
+
+    /* Đặt màu nền cho các hàng chẵn trong bảng */
+    .table tr:nth-child(odd) {
+        background-color: #e6e6e6; /* Màu xám nhạt khác */
+    }
+        </style>
+      </div>    
+    </div>
+    
+  </div>
+    
+  
+</body>
+</html>
+
+<script>
+  if (typeof require !== 'function') {
+  var require = (module) => {
+    if (module === 'moment') {
+      return moment;
+    } else {
+      throw new Error(`Cannot find module '${module}'`);
+    }
+  };
+}
+function areTimeRangesOverlapping(range1, range2) {
+  const start1 = moment(range1[0], 'HH:mm');
+  const end1 = moment(range1[1], 'HH:mm');
+  const start2 = moment(range2[0], 'HH:mm');
+  const end2 = moment(range2[1], 'HH:mm');
+
+  // Kiểm tra xem khoảng thời gian có trùng nhau không
+  const isOverlapping = end1.isSameOrAfter(start2) && start1.isSameOrBefore(end2);
+
+  return isOverlapping;
+}
+
+function areDateRangesOverlapping(range1, range2) {
+  const start1 = moment(range1[0], 'YYYY-MM-DD');
+  const end1 = moment(range1[1], 'YYYY-MM-DD').add(1, 'days');  // Thêm 1 ngày để bao gồm cả ngày kết thúc
+  const start2 = moment(range2[0], 'YYYY-MM-DD');
+  const end2 = moment(range2[1], 'YYYY-MM-DD').add(1, 'days');  // Thêm 1 ngày để bao gồm cả ngày kết thúc
+
+  // Kiểm tra xem khoảng ngày có trùng nhau không
+  const isOverlapping = end1.isSameOrAfter(start2) && start1.isSameOrBefore(end2);
+
+  return isOverlapping;
+}
+
+
+
+var registeredCourses = []; //lưu kết quả cuối cùng
+var thu = []; //lưu thứ
+var gio_s = []; // lưu giờ học bắt đầu
+var gio_e = []; //lưu giờ học kết thúc
+var id = []; //lưu id khóa học
+var start_d = []; //lưu ngày bắt đầu học
+var end_d = []; //lưu ngày kết thúc học
+
+function toggleRegistration(element) {
+  var course_id = element.getAttribute('data-course');
+  var teacher_id = element.getAttribute('data-teacher');
+  var start_date = element.getAttribute('data-start');
+  var end_date = element.getAttribute('data-end');
+  var hour = element.getAttribute('data-hour');
+  var timetableData = element.getAttribute('data-timetable');
+    var registrationInfo = {
+      course_id: course_id,
+      teacher_id: teacher_id,
+      start_date: start_date,
+      end_date: end_date,
+      hour: hour,
+      timetable: timetableData 
+    };
+    var registrationButtonElement = element; // Use the clicked button
+        if (registrationButtonElement.textContent === "Đăng ký dạy") {
+          var course_id =registrationInfo.course_id;
+          var time_table =JSON.parse(registrationInfo.timetable.replace(/'/g, '"'));
+          var hour =registrationInfo.hour;
+          //var start = registrationInfo.start_date;
+          //var end = registrationInfo.end_date;
+          //var teacher_id = registrationInfo.teacher_id;
+          if (registeredCourses !== undefined && registeredCourses.length > 0){
+            var thu_temp = []; //lưu thứ
+            var gio_s_temp = []; //lưu giờ bắt đầu
+            var gio_e_temp = []; //lưu giờ kết thúc 
+            var id_temp = []; 
+            var start_d_temp = []; //lưu ngày bắt đầu
+            var end_d_temp = []; //lưu ngày kết thúc
+            var time_temp =  time_table; //tkb tạm được khởi tạo sẽ bằng tkb của KH đg bấm đăng ký
+            var flag = false;
+
+            for (var i = 0; i < time_temp.length; i++) {
+                var index_d = thu.indexOf(time_temp[i][0]); //nếu phần tử thứ không chứa thứ trong tkb tạm
+                if (index_d === -1) { //không có trong thứ
+                    thu_temp.push(time_temp[i][0]); //thêm thứ của mảng tạm vào thứ tạm đó 
+                    gio_s_temp.push(time_temp[i][1]); //thêm giờ của mảng tạm vào thứ tạm đó 
+                    const moment = require('moment');
+                    var gioketthuc =  moment(time_temp[i][1], "HH:mm").add(hour,'hours'); 
+                    gioketthuc = gioketthuc.format("HH:mm");
+                    gio_e_temp.push(gioketthuc);
+                    id_temp.push(course_id); //thêm id vào mảng tạm
+                    start_d_temp.push(start_date );
+                    end_d_temp.push(end_date);
+                } else {
+                  //var index = b.indexOf(a);
+                  while (index_d !== -1) {
+                    
+                  var giobdhientai = time_temp[i][1];
+                  const moment = require('moment');
+                  var gioketthuc =  moment(time_temp[i][1], "HH:mm").add(hour,'hours'); 
+                  gioketthuc = gioketthuc.format("HH:mm"); 
+                  var giobd_ss = gio_s[index_d];
+                  var giokt_ss = gio_e[index_d];
+
+                  var ngaybd_ht = start_date;
+                  var ngaykt_ht = end_date;
+                  var ngaybd_ss = start_d[index_d];
+                  var ngaykt_ss = end_d[index_d];
+                
+                  const range1 = [giobdhientai, gioketthuc];
+                  const range2 = [giobd_ss, giokt_ss];
+
+                  const overlapping = areTimeRangesOverlapping(range1, range2);
+                  if(overlapping === true){
+           
+                    const range1 = [ngaybd_ht, ngaykt_ht];
+                    const range2 = [ngaybd_ss, ngaykt_ss];
+                      // Ví dụ sử dụng
+                      const overlapping1 = areDateRangesOverlapping(range1, range2);
+                      console.log(overlapping1);
+                      console.log(ngaybd_ht);
+                      console.log(ngaykt_ht);
+                      console.log(ngaybd_ht);
+                      console.log(ngaykt_ss)
+                      if(overlapping1 === true){
+                        flag = true;
+                        window.alert("Bạn khong thể đăng ký trùng giờ dạy!");
+                        break;
+                      }
+                      thu_temp.push(time_temp[i][0]); //thêm thứ của mảng tạm vào thứ tạm đó 
+                      gio_s_temp.push(time_temp[i][1]); //thêm giờ của mảng tạm vào thứ tạm đó 
+                      gio_e_temp.push(gioketthuc);
+                      id_temp.push(course_id); //thêm id vào mảng tạm
+                      start_d_temp.push(start_date );
+                      end_d_temp.push(end_date);
+                    }
+                    index_d = thu.indexOf(time_temp[i][0], index_d + 1);
+                  }
+                }
+                
+            }
+            if(flag === false){
+              for (var j = 0; j < thu_temp.length; j++) {
+                thu.push(thu_temp[j]);
+                gio_s.push(gio_s_temp[j]);
+                id.push(id_temp[j]);
+                start_d.push(start_d_temp[j]);
+                end_d.push(end_d_temp[j]);
+                gio_e.push(gio_e_temp[j]);
+              }
+              registeredCourses.push(registrationInfo);
+              registrationButtonElement.textContent = "Hủy đăng ký";
+            }
+            console.log(registeredCourses);
+          }else{
+            registeredCourses = Array.from(registeredCourses || []);
+            const moment = require('moment');
+            time_table.forEach(function(i) {
+            thu.push(i[0]);
+            gio_s.push(i[1]);
+            var gioketthuc =  moment(i[1], "HH:mm").add(hour,'hours'); 
+            gioketthuc = gioketthuc.format("HH:mm");
+            id.push(course_id); 
+            gio_s.push();
+            gio_e.push(gioketthuc);
+            start_d.push(start_date);
+            end_d.push(end_date);
+            });
+            registeredCourses.push(registrationInfo); 
+            registrationButtonElement.textContent = "Hủy đăng ký";
+          }
+        }else{
+          window.alert("Bạn có chắc muốn hủy đăng ký khóa này?");
+          registrationButtonElement.innerHTML = "Đăng ký dạy";
+        }   
+}
+function confirmRegister() {
+  if(registeredCourses == undefined || registeredCourses.length == 0){
+    window.alert("Bạn chưa đăng ký khóa học nào.");
+  }else{
+    const confirmation = confirm("Bạn có chắc chắn muốn đăng ký ?");
+
+  if (confirmation) {
+    // Nếu người dùng chọn "OK" trong hộp thoại xác nhận, thì mới thực hiện xóa
+    register_Course(registeredCourses) ;
+  }}
+}
+function register_Course(registeredCourses) {
+    console.log(registeredCourses);
+    fetch("/giaovien/dangkylichday", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ info: registeredCourses }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();  // Chuyển đổi phản hồi sang JSON
+        } else {
+            console.error("Request failed with status:", response.status);
+            throw new Error("Request failed");
+        }
+    })
+    .then((data) => {
+        // Thực hiện các hành động sau khi hoàn tất yêu cầu POST
+        console.log("Received data from server:", data);
+        // Chuyển hướng trang sau khi đăng ký thành công
+        if (data.redirect) {
+            window.location.href = data.redirect;
+        }
+    })
+    .catch((error) => {
+        // Xử lý lỗi ở đây
+        console.error("Error:", error);
+    });
+}
+
+
+
+
+
+
+
+
+ 
+
+</script>
+
+
+
+  
+  
+  
+  
+  
+  
+  
+
+
+
+  
+
+
+
+
+  
+

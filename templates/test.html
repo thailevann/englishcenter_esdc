@@ -1,0 +1,21 @@
+<div class="tm-form-group">
+    <label for="certificates">Bằng cấp:</label>
+    <div id="certificateInputs">
+        <input type="text" name="certificates[]" class="tm-form-control" required />
+    </div>
+    <button type="button" id="addCertificateButton">Thêm bằng cấp</button>
+</div>
+
+<script>
+    var addCertificateButton = document.getElementById('addCertificateButton');
+    var certificateInputs = document.getElementById('certificateInputs');
+
+    addCertificateButton.addEventListener('click', function() {
+        var newCertificateInput = document.createElement('input');
+        newCertificateInput.type = 'text';
+        newCertificateInput.name = 'certificates[]';
+        newCertificateInput.className = 'tm-form-control';
+        newCertificateInput.required = true;
+        certificateInputs.appendChild(newCertificateInput);
+    });
+</script>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật giáo viên</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/capnhatgiaovien.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+</head>
+<body>
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+         
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav  ">
+                <li class="nav-item ">
+                  <a class="nav-link" href="login.html"> Thông tin cá nhân <span class="sr-only">(current)</span></a>
+                </li>
+                
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('logout') }}"> Đăng xuất </a>
+                </li>
+              
+              </ul>
+             
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+  </div>
+
+  <div class="tm-container">
+    <div class="tm-row">
+      <!-- Site Header -->
+      <div class="tm-left">
+        <div class="tm-left-inner">
+          <div class="tm-site-header">
+            <h1 class="tm-site-name">Xin chào Giáo Viên</h1>
+          </div>
+          <nav class="tm-site-nav">
+            <ul class="tm-site-nav-ul">
+              <li class="tm-page-nav-item">
+                <a  class="tm-page-link active">
+                  <span>Đăng ký lịch dạy</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="{{ url_for('update_sch') }}" class="tm-page-link">
+                  <span>Xem lịch giảng dạy</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="{{ url_for('update_course') }}" class="tm-page-link">
+                  <span>Chi tiết khóa học phụ trách</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>        
+      </div>
+      <div class="tm-right">
+        <main class="tm-main">
+          <div id="cold" class="tm-tab-content">
+          <!-- Contact Page -->
+          <div id="contact" class="tm-page-content">
+            <ul class="tm-site-nav-ul">
+              <li class="tm-page-nav-item">
+                <p class="update_course">
+                  <span>Đăng ký lịch dạy</span>
+                </p>
+              </li>
+              </ul>
+
+              <div class="hidden-form tm-black-bg tm-contact-form-container tm-align-right">
+                <form  method="POST" id="contact-form" enctype="multipart/form-data" onsubmit="return validateForm()">
+                  <input style = "display: none;" type="text" name="status" id="status" value="insert"/>
+                  <div class="tm-form-group">
+                    <p>Ảnh giáo viên:</p>
+                    <p><img id="output" width="200"/></p>
+                    <input type="file" name ="teacher_image" accept="image/*" onchange="loadFile(event)" id="teacher_image">
+                    <div id="errorText" style="color: red;"></div>
+                </div>
+                <div class="tm-form-group">
+                    <label for="teacher_name">Họ và tên:</label>
+                    <input type="text" name="teacher_name" id="teacher_name" class="tm-form-control" placeholder="Tên giáo viên" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="address">Địa chỉ:</label>
+                    <input type="text" name="address" id="address" class="tm-form-control" placeholder="Địa chỉ" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="number" name="phone" id="phone" class="tm-form-control" placeholder="Số điện thoại" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="birthdate">Ngày sinh:</label>
+                    <input type="date" name="birthdate" id="birthdate" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="date_hire">Ngày vào làm:</label>
+                    <input type="date" name="date_hire" id="date_hire" class="tm-form-control" required />
+                  </div>
+               
+                  <div class="tm-form-group">
+                    <label for="certificates">Bằng cấp:</label>
+                    <div id="certificateInputs">
+                        <div class="certificate-input">
+                            <input type="text" name="certificates[]" class="tm-form-control" required />
+                        </div>
+                    </div>
+                    
+                
+                    <button type="button" id="addCertificateButton">Thêm bằng cấp mới</button>
+                    </div>
+                    <div class="tm-form-group">
+                        <p>Các khóa được phép dạy: </p>
+                        <label for="ielts_course">IELTS</label>
+                        <br>
+                        <input type="checkbox" value="1.0 - 3.5" name="ielts">
+                        <label for="1.0 - 3."> 1.0 - 3.5 </label> 
+
+                        <input type="checkbox" value="4.0 - 4.5" name="ielts">
+                        <label for="4.0 - 4.5"> 4.0 - 4.5 </label> 
+                        <br>
+
+                        <input type="checkbox" value="5.0 - 5.5" name="ielts">
+                        <label for="5.0 - 5.5"> 5.0 - 5.5 </label> 
+                       
+                        <input type="checkbox" value="6.0 - 6.5" name="ielts">
+                        <label for="6.0 - 6.5"> 6.0 - 6.5 </label> 
+                        <br>
+                        <input type="checkbox" value="6.5 - 7.0" name="ielts">
+                        <label for="6.5 - 7.0"> 6.5 - 7.0 </label> 
+
+                        <input type="checkbox"  value="7.0+" name="ielts">
+                        <label for="7.0+"> 7.0+ </label> 
+                        <br>
+                        <label for="toeic_course">TOEIC</label>
+                        <br>
+                        <input type="checkbox" value="1 - 295" name="toeic">
+                        <label for="1 - 295">001 - 295    </label> 
+
+                        <input type="checkbox" value="300 - 595" name="toeic">
+                        <label for="300 - 595"> 300 - 595 </label> 
+                        <br>
+
+                        <input type="checkbox" value="600 - 650" name="toeic">
+                        <label for="600 - 650">600 - 650</label> 
+                        
+                        <input type="checkbox" value="650+" name="toeic">
+                        <label for="650+"> 650+</label> 
+                        <br>
+                        <label for="pet_course">Tiếng anh Cambridge</label>
+                        <br>
+                        <input type="checkbox" value="A1 - Căn bản" name="cam">
+                        <label style ="margin-right: 30px;" for="A1 - Căn bản"> A1 - Căn bản </label> 
+
+                        <input type="checkbox" value="A2 - Sơ cấp" name="cam">
+                        <label  for="A2 - Sơ cấp"> A2 - Sơ cấp </label> 
+                        <br>
+
+                        <input type="checkbox" value="B1 - Trung cấp" name="cam">
+                        <label for="B1 - Trung cấp"> B1 - Trung cấp </label> 
+                       
+                        <input type="checkbox" value="B2 - Trung cao cấp" name="cam">
+                        <label for="B2 - Trung cao cấp"> B2 - Trung cao cấp </label> 
+                        <br>
+                        <input type="checkbox" value="C1 - Cao cấp" name="cam">
+                        <label style ="margin-right: 31.5px;" for="C1 - Cao cấp"> C1 - Cao cấp </label> 
+
+                        <input type="checkbox"  value="C2 - Thành thạo" name="cam">
+                        <label for="C2 - Thành thạo"> C2 - Thành thạo </label> 
+                        <br>
+                      </div>
+                      
+                    <button type="submit" class="tm-btn-primary tm-align-right" id ="submitButton">Thêm giáo viên</button>
+                  </div>
+
+                </form>
+              </div>
+
+              <div class="tm-list">
+                {%if teacher_list%}
+                {% for teacher in teacher_list %}
+                <div class="edit-popup modal-body " id="edit-popup" style="display: none;">
+                  <form method="POST" action="">
+                    <h4 style="text-align: center;">Chỉnh sửa giáo viên mã <strong style="color: aquamarine;" id="courseIdPlaceholder"></strong></h4>
+                    <input style = "display: none;" type="text" name="status" id="status" value="update"/>
+                    <div class="tm-form-group">
+                      <p>Ảnh giáo viên:</p>
+                      <p><img id="image_o" width="200"/></p>
+                      <input type="file" name ="teacher_image" accept="image/*" onchange="loadFile1(event)" id="teacher_image">
+                      <div id="errorText_o" style="color: red;"></div>
+                  </div>
+                  <div class="tm-form-group">
+                      <label for="teacher_name">Họ và tên:</label>
+                      <input type="text" name="teacher_name" id="teacher_name" class="tm-form-control" placeholder="Tên giáo viên" required />
+                    </div>
+                    <div class="tm-form-group">
+                      <label for="address">Địa chỉ:</label>
+                      <input type="text" name="address" id="address" class="tm-form-control" placeholder="Địa chỉ" required />
+                    </div>
+                    <div class="tm-form-group">
+                      <label for="phone">Số điện thoại:</label>
+                      <input type="number" name="phone" id="phone" class="tm-form-control" placeholder="Số điện thoại" required />
+                    </div>
+                    <div class="tm-form-group">
+                      <label for="birthdate">Ngày sinh:</label>
+                      <input type="date" name="birthdate" id="birthdate" class="tm-form-control" required />
+                    </div>
+                    <div class="tm-form-group">
+                      <label for="date_hire">Ngày vào làm:</label>
+                      <input type="date" name="date_hire" id="date_hire" class="tm-form-control" required />
+                    </div>
+                 
+                    <div class="tm-form-group">
+                      <label for="certificates">Bằng cấp:</label>
+                      <div id="certificateInputs">
+                          <div class="certificate-input">
+                              <input type="text" name="certificates[]" class="tm-form-control" required />
+                          </div>
+                      </div>
+                      
+                  
+                      <button type="button" id="addCertificateButton">Thêm bằng cấp mới</button>
+                      </div>
+                      <div class="tm-form-group">
+                          <p>Các khóa được phép dạy: </p>
+                          <label for="ielts_course">IELTS</label>
+                          <br>
+                          <input type="checkbox" value="1.0 - 3.5" name="ielts">
+                          <label for="1.0 - 3."> 1.0 - 3.5 </label> 
+  
+                          <input type="checkbox" value="4.0 - 4.5" name="ielts">
+                          <label for="4.0 - 4.5"> 4.0 - 4.5 </label> 
+                          <br>
+  
+                          <input type="checkbox" value="5.0 - 5.5" name="ielts">
+                          <label for="5.0 - 5.5"> 5.0 - 5.5 </label> 
+                         
+                          <input type="checkbox" value="6.0 - 6.5" name="ielts">
+                          <label for="6.0 - 6.5"> 6.0 - 6.5 </label> 
+                          <br>
+                          <input type="checkbox" value="6.5 - 7.0" name="ielts">
+                          <label for="6.5 - 7.0"> 6.5 - 7.0 </label> 
+  
+                          <input type="checkbox"  value="7.0+" name="ielts">
+                          <label for="7.0+"> 7.0+ </label> 
+                          <br>
+                          <label for="toeic_course">TOEIC</label>
+                          <br>
+                          <input type="checkbox" value="1 - 295" name="toeic">
+                          <label for="1 - 295">001 - 295    </label> 
+  
+                          <input type="checkbox" value="300 - 595" name="toeic">
+                          <label for="300 - 595"> 300 - 595 </label> 
+                          <br>
+  
+                          <input type="checkbox" value="600 - 650" name="toeic">
+                          <label for="600 - 650">600 - 650</label> 
+                          
+                          <input type="checkbox" value="650+" name="toeic">
+                          <label for="650+"> 650+</label> 
+                          <br>
+                          <label for="pet_course">Tiếng anh Cambridge</label>
+                          <br>
+                          <input type="checkbox" value="A1 - Căn bản" name="cam">
+                          <label style ="margin-right: 30px;" for="A1 - Căn bản"> A1 - Căn bản </label> 
+  
+                          <input type="checkbox" value="A2 - Sơ cấp" name="cam">
+                          <label  for="A2 - Sơ cấp"> A2 - Sơ cấp </label> 
+                          <br>
+  
+                          <input type="checkbox" value="B1 - Trung cấp" name="cam">
+                          <label for="B1 - Trung cấp"> B1 - Trung cấp </label> 
+                         
+                          <input type="checkbox" value="B2 - Trung cao cấp" name="cam">
+                          <label for="B2 - Trung cao cấp"> B2 - Trung cao cấp </label> 
+                          <br>
+                          <input type="checkbox" value="C1 - Cao cấp" name="cam">
+                          <label style ="margin-right: 31.5px;" for="C1 - Cao cấp"> C1 - Cao cấp </label> 
+  
+                          <input type="checkbox"  value="C2 - Thành thạo" name="cam">
+                          <label for="C2 - Thành thạo"> C2 - Thành thạo </label> 
+                          <br>
+                        </div>
+                    <button>Lưu</button>
+                    <button onclick="closeEditPopup()">Hủy</button>
+                </form>
+              </div> 
+
+                <div class="tm-list-item">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name"> {{ teacher[1] }}<span class="tm-list-item-price"> {{ teacher[0] }}</span></h3>
+                    <img width="200" src="{{ url_for('static', filename='images/' ~ teacher[6]) }}" alt="Ảnh profile">
+
+                    <p class="tm-list-item-description">- Địa chỉ:  {{ teacher[4] }}</p>
+                    <p class="tm-list-item-description">- Số điện thoại: {{ teacher[3] }}</p>
+                    <p class="tm-list-item-description">- Ngày vào làm: {{ teacher[5] }}</p>
+                      <p class="tm-list-item-lesson_day">- Bằng cấp:
+                        <div class = "lesson_day_time">
+                        {% for cer in certificate_list %}
+                        {% if teacher[0]|int == cer[0]|int %}
+                          <p>{{ cer[1] }} </p>
+                        {% endif %}
+                      {% endfor %}
+                        </div>
+                    </p>
+                      <p class="tm-list-item-lesson_day">- Các khóa có thể dạy:
+                        <div class = "lesson_day_time">
+                        {% for c in  teachable_courses_list %}
+                        {% if teacher[0]|int == c[0]|int %}
+                          <p>{{c[2]}}: {{ c[1] }} </p>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+                      </p>
+                      <br>
+                        
+                    
+                  <button data-course-id="{{ teacher[0] }}" class="delete-icon" onclick="confirmDelete('{{ teacher[0] }}')">
+                  <svg  xmlns="http://www.w3.org/2000/svg" width="35" height="40" fill="currentColor" class="bi bi-trash  delete-icon" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                  </svg>
+                  </button>
+
+                  <div class="sua_course">
+                    <p  class="sua_course ">
+                      <span onclick="openEditPopup('{{ teacher[0] }}', '{{ teacher[1]}}', '{{ teacher[2]}}', '{{ teacher[3]}}', '{{ teacher[4]}}', '{{ teacher[5]}}', '{{ teacher[6]}}')">Sửa thông tin</span>    
+                    </p>
+                  </div>
+                </p>
+                </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="tm-black-bg tm-contact-text-container">
+                  <h2 class="tm-text-primary">Thông báo</h2>
+                  <p>Hiện chưa có giáo viên, bạn hãy thêm giáo viên mới</p>
+                </div>
+                {% endif %}   
+             
+              </div>
+
+            </div> 
+          </div>
+     
+        </main>
+      </div>    
+    </div>
+    
+  </div>
+    
+
+
+  
+  <section class="info_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="info_contact">
+            <h5>
+              Liên hệ:
+            </h5>
+              <p>
+                Số điện thoại: 0346676592
+              </p>
+            <p>
+              Email: vanlethai12042002@gmail.com
+            </p>
+            <div>
+              
+            </div>
+          </div>
+        </div>      
+    </div>
+  </section>
+</body>
+</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const updateCourseLink = document.querySelector(".update_course");
+    const formContainer = document.querySelector(".tm-contact-form-container");
+    let formVisible = false; 
+  
+    
+    updateCourseLink.addEventListener("click", function(event) {
+      event.preventDefault(); 
+      if (formVisible) {
+        formContainer.classList.add("hidden-form"); 
+      } else {
+        formContainer.classList.remove("hidden-form"); 
+      }
+      formVisible = !formVisible; 
+    });
+  });
+
+  
+
+   
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const courseFeeInput = document.getElementById("course_fee");
+
+    courseFeeInput.addEventListener("input", function() {
+      let value = courseFeeInput.value;
+
+      // Loại bỏ tất cả ký tự không phải số và dấu phẩy
+      value = value.replace(/[^0-9,]/g, '');
+
+      value = Number(value.split(",").join('')).toLocaleString('vi-VN');
+      courseFeeInput.value = value;
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+  const classLevelSelect = document.getElementById("class_level");
+  const bandScoreGroupIELTS = document.getElementById("band-score-group_ielts");
+  const bandScoreGroupTOEIC = document.getElementById("band-score-group_toeic");
+
+  classLevelSelect.addEventListener("change", function() {
+  const selectedValue = classLevelSelect.value;
+
+    if (selectedValue === "IELTS") {
+      bandScoreGroupIELTS.style.display = "block";
+      bandScoreGroupTOEIC.style.display = "none";
+    } else if (selectedValue === "TOEIC") {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "block";
+    } else {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "none";
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const classLevelSelect = document.getElementById("class_level_update");
+  const bandScoreGroupIELTS = document.getElementById("band-score-group_ielts_update");
+  const bandScoreGroupTOEIC = document.getElementById("band-score-group_toeic_update");
+
+  classLevelSelect.addEventListener("change", function() {
+  const selectedValue = classLevelSelect.value;
+
+    if (selectedValue === "IELTS") {
+      bandScoreGroupIELTS.style.display = "block";
+      bandScoreGroupTOEIC.style.display = "none";
+    } else if (selectedValue === "TOEIC") {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "block";
+    } else {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "none";
+    }
+  });
+});
+
+
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+
+  function confirmDelete(teacherId) {
+  const confirmation = confirm("Bạn có chắc chắn muốn xóa giáo viên này?");
+  if (confirmation) {
+    // Nếu người dùng chọn "OK" trong hộp thoại xác nhận, thì mới thực hiện xóa
+    deleteCourse(teacherId);
+  }
+}
+
+function deleteCourse(teacherId) {
+  fetch("/quanly/capnhatgiaovien", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({teacherId: teacherId}),
+  })
+  .then((response) => {
+    if (response.ok) {
+      // Trang tự tải lại sau khi xóa thành công
+      location.reload();
+    } else {
+      console.error("Request failed with status:", response.status);
+    }
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+
+
+
+function validateForm() {
+    var image = document.getElementById('output');
+    image.scrollIntoView();
+    return hasError;
+}
+
+</script>
+<script>
+
+    var editingTeacherId = null; // Khởi tạo biến editingCourseId và đặt giá trị ban đầu là null
+
+function openEditPopup(teacher_id, name, birthdate, phone, address, Date_of_Hire, srcAvt) {
+  var scrollPosition = window.innerHeight / 3;
+  window.scrollTo(0, scrollPosition);
+    editingTeacherId  = teacher_id;
+    document.getElementById("edit-popup").style.display = "block";
+    var editPopup = document.getElementById("edit-popup");
+    var image_o = editPopup.querySelector("#image_o");
+    console.log(srcAvt);
+    image_o.src = "{{ url_for('static', filename='images/1.png' ~ srcAvt) }}";
+    console.log(image_o.src);
+}
+
+function closeEditPopup() {
+    editingTeacherId  = null;
+    document.getElementById("edit-popup").style.display = "none";
+}
+
+
+var hasError = false;
+var loadFile1 = function(event) {
+    var image = document.getElementById('image_o');
+    var errorText = document.getElementById('errorText_o');
+    var file = event.target.files[0];
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        image.src = e.target.result;
+
+        var img = new Image();
+        img.src = e.target.result;
+
+        img.onload = function() {
+            var naturalWidth = this.naturalWidth;
+            var naturalHeight = this.naturalHeight;
+            var expectedWidth = 500; // Kích thước mong đợi (ví dụ: 800px)
+            var expectedHeight = 500;
+
+            if (naturalWidth < expectedWidth || naturalHeight < expectedHeight) {
+                errorText.innerText = "Ảnh quá nhỏ và có thể bị mờ. Vui lòng tải lên ảnh có độ phân giải cao.";
+            } else {
+                errorText.innerText = "";
+                hasError = true;
+            }
+        };
+    };
+    if (file) {
+        reader.readAsDataURL(file);
+
+    }
+};
+
+var loadFile = function(event) {
+    var image = document.getElementById('output');
+    var errorText = document.getElementById('errorText');
+    var file = event.target.files[0];
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        image.src = e.target.result;
+
+        var img = new Image();
+        img.src = e.target.result;
+
+        img.onload = function() {
+            var naturalWidth = this.naturalWidth;
+            var naturalHeight = this.naturalHeight;
+            var expectedWidth = 500; // Kích thước mong đợi (ví dụ: 800px)
+            var expectedHeight = 500;
+
+            if (naturalWidth < expectedWidth || naturalHeight < expectedHeight) {
+                errorText.innerText = "Ảnh quá nhỏ và có thể bị mờ. Vui lòng tải lên ảnh có độ phân giải cao.";
+            } else {
+                errorText.innerText = "";
+                hasError = true;
+            }
+        };
+    };
+    if (file) {
+        reader.readAsDataURL(file);
+
+    }
+};
+var addCertificateButton = document.getElementById('addCertificateButton');
+    var certificateInputs = document.getElementById('certificateInputs');
+    var isFirstInput = true;
+
+    addCertificateButton.addEventListener('click', function() {
+        var certificateInputDiv = document.createElement('div');
+        certificateInputDiv.className = 'certificate-input';
+        var newCertificateInput = document.createElement('input');
+        newCertificateInput.type = 'text';
+        newCertificateInput.name = 'certificates[]';
+        newCertificateInput.className = 'tm-form-control';
+        newCertificateInput.required = true;
+        certificateInputDiv.appendChild(newCertificateInput);
+        var removeCertificateButton = document.createElement('button');
+            removeCertificateButton.type = 'button';
+            removeCertificateButton.className = 'remove-certificate-button';
+            removeCertificateButton.innerHTML = '&#10006;'; 
+            removeCertificateButton.addEventListener('click', function() {
+                certificateInputs.removeChild(certificateInputDiv);
+            });
+            certificateInputDiv.appendChild(removeCertificateButton);
+        certificateInputs.appendChild(certificateInputDiv);
+    });
+
+
+</script>
+
+
+
+  
+  
+  
+  
+  
+  
+  
+
+
+
+  
+
+
+
+
+  
+

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật khóa học</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/capnhatkhoahoc.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+</head>
+<body>
+  
+  <div class="tm-container">
+    <div class="tm-row">
+      <!-- Site Header -->
+      <div class="tm-left">
+        <div class="tm-left-inner">
+          <div class="tm-site-header">
+            <h1 class="tm-site-name">Xin chào quản lý</h1>
+          </div>
+          <nav class="tm-site-nav">
+            <ul class="tm-site-nav-ul">
+              <li class="tm-page-nav-item">
+                <a  class="tm-page-link active">
+                  <span>Cập nhật khóa học </span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="{{ url_for('capnhatlichday') }}" class="tm-page-link">
+                  <span>Cập nhật lịch dạy</span>
+                </a>
+              </li>
+              <li class="tm-page-nav-item">
+                <a href="{{ url_for('update_teacher') }}" class="tm-page-link">
+                  <span>Cập nhật giáo viên</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>        
+      </div>
+      <div class="tm-right">
+        <main class="tm-main">
+          <div id="cold" class="tm-tab-content">
+          <!-- Contact Page -->
+          <div id="contact" class="tm-page-content">
+            <ul class="tm-site-nav-ul">
+              <li class="tm-page-nav-item">
+                <p class="update_course">
+                  <span>Thêm khóa học</span>
+                </p>
+              </li>
+              </ul>
+              <div class="hidden-form tm-black-bg tm-contact-form-container tm-align-right">
+                <form  method="POST" id="contact-form">
+                  <input style = "display: none;" type="text" name="status" id="status" value="insert"/>
+                  <div class="tm-form-group">
+                    <label for="class_name">Tên khóa học:</label>
+                    <input type="text" name="class_name" id="class_name" class="tm-form-control" placeholder="Tên lớp học" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="class_level">Cấp độ:</label>
+                    <select name="class_level" id="class_level_update" class="tm-form-control" required>
+                      <option value="IELTS">IELTS</option>
+                      <option value="TOEIC">TOEIC</option>
+                      <option value="Tiếng Anh Cambridge">Tiếng Anh Cambridge</option>
+                    </select>
+                  </div>
+                  <div class="tm-form-group" id="band-score-group_ielts_update" >
+                    <label for="band_score_ielts">Band điểm:</label>
+                    <select name="band_score_ielts" id="band_score_ielts" class="tm-form-control ielts">
+                      <option value="1.0 - 3.5">1.0 - 3.5</option>
+                      <option value="4.0 - 4.5">4.0 - 4.5</option>
+                      <option value="5.0 - 5.5">5.0 - 5.5</option>
+                      <option value="6.0 - 6.5">6.0 - 6.5</option>
+                      <option value="6.5 - 7.0">6.5 - 7.0</option>
+                      <option value="7.0+">7.0+</option>
+                    </select>
+                  </div>
+                  <div class="tm-form-group" id="band-score-group_toeic_update" style="display: none;">
+                    <label for="band_score_toeic">Band điểm:</label>
+                    <select name="band_score_toeic" id="band_score_toeic" class="tm-form-control toeic">
+                      <option value="1.0 - 295">1 - 295</option>
+                      <option value="300 - 595">300 - 595</option>
+                      <option value="600 - 650">600 - 650</option>
+                      <option value="650+">650+</option>
+                    </select>
+                  </div>
+                  <div class="tm-form-group" id="band-score-group_pet_update" style="display: none;">
+                    <label for="band_score_pet">Band điểm:</label>
+                    <select name="band_score_pet" id="band_score_pet" class="tm-form-control pet">
+                      <option value="A1 - Căn bản">A1 - Căn bản</option>
+                      <option value="A2 - Sơ cấp">A2 - Sơ cấp</option>
+                      <option value="B1 - Trung cấp">B1 - Trung cấp</option>
+                      <option value="B2 - Trung cao cấp">B2 - Trung cao cấp</option>
+                      <option value="C1 - Cao cấp">C1 - Cao cấp</option>
+                      <option value="C2 - Thành thạo">C2 - Thành thạo</option>
+                    </select>
+                  </div>
+                  
+                  
+                  <div class="tm-form-group">
+                    <label for="start_date">Ngày bắt đầu:</label>
+                    <input type="date" name="start_date" id="start_date" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="end_date">Ngày kết thúc:</label>
+                    <input type="date" name="end_date" id="end_date" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="so_gio_hoc">Số giờ học 1 buổi:</label>
+                    <input type="number" name="so_gio_hoc" id="so_gio_hoc" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="lessons_per_week">Chọn giờ học/tuần:</label>
+                    <div class="tm-form-control checkbox-group">
+                      <div class="day-hour-container">
+                        <label for="hour_hai">Thứ Hai:</label>
+                        <input type="time" id="hour_hai" name="hour_hai" >
+                        </div>
+                      
+                      <div class="day-hour-container">
+                        <span> Thứ Ba </span>
+                        <label for="hour_tuesday"></label>
+                        <input type="time" id="hour_ba" name="hour_ba">
+                      </div>
+                      
+                      <div class="day-hour-container">
+                        <span> Thứ Tư </span>
+                        <label for="hour_tuesday"></label>
+                        <input type="time" id="hour_tu" name="hour_tu" >
+                      </div>
+
+                      <div class="day-hour-container">
+                        <span> Thứ Năm</span>
+                        <label for="hour_tuesday"></label>
+                        <input type="time" id="hour_nam" name="hour_nam">
+                      </div>
+
+                      <div class="day-hour-container">
+                        <span> Thứ Sáu </span>
+                        <input type="time" id="hour_sau" name="hour_sau">
+                      </div>
+
+                      <div class="day-hour-container">
+                        <span> Thứ Bảy </span>
+                        <input type="time" id="hour_bay" name="hour_bay">
+                      </div>
+                      <div class="day-hour-container">
+                        <span> Chủ nhật </span>
+                        <input type="time" id="hour_cn" name="hour_cn" >
+                      </div> 
+                    </div>
+                  </div>
+                  
+                
+                  <div class="tm-form-group">
+                    <label for="course_fee">HỌC PHÍ:</label>
+                    <input type="text" name="course_fee" id="course_fee_update" class="tm-form-control" required />
+                  </div>
+
+                  <div class="tm-form-group">
+                    <label for="description">MÔ TẢ:</label>
+                    <textarea rows="6" name="description" id="description" class="tm-form-control" required></textarea>
+                  </div>
+                  
+                  <div>
+                    <button type="submit" class="tm-btn-primary tm-align-right">Thêm khóa học</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="tm-list">
+                {%if courses%}
+                {% for course in courses %}
+                <div class="edit-popup modal-body " id="edit-popup" style="display: none;">
+                  <form method="POST" action="">
+                    <h4 style="text-align: center;">Chỉnh sửa khóa học mã <strong style="color: aquamarine;" id="courseIdPlaceholder"></strong></h4>
+                    <input style = "display: none;" type="text" name="status" id="status" value="update"/>
+                    <input style = "display: none;" type="number" name="course_id" id="course_id" value="{{ course[0] }} "/>
+
+                    <div class="tm-form-group">
+                      <label for="class_name">Tên khóa học:</label>
+                      <input type="text" name="class_name" id="class_name" class="tm-form-control" required />
+                    </div>
+                    <div class="tm-form-group">
+                      <label for="class_level">Cấp độ:</label>
+                      <select name="class_level" id="class_level" class="tm-form-control" value =  "{{ course[2] }}" required>
+                        <option value="IELTS">IELTS</option>
+                        <option value="TOEIC">TOEIC</option>
+                        <option value="Tiếng Anh Cambridge">Tiếng Anh Cambridge</option>
+                      </select>
+                    </div>
+                    <div class="tm-form-group" id="band-score-group_ielts" >
+                      <label for="band_score_ielts_update">Band điểm:</label>
+                      <select name="band_score_ielts_update" id="band_score_ielts_update" class="tm-form-control ielts">
+                        <option value="1.0 - 3.5">1.0 - 3.5</option>
+                        <option value="4.0 - 4.5">4.0 - 4.5</option>
+                        <option value="5.0 - 5.5">5.0 - 5.5</option>
+                        <option value="6.0 - 6.5">6.0 - 6.5</option>
+                        <option value="6.5 - 7.0">6.5 - 7.0</option>
+                        <option value="7.0+">7.0+</option>
+                      </select>
+                    </div>
+                    <div class="tm-form-group" id="band-score-group_toeic" style="display: none;">
+                      <label for="band_score_toeic_update">Band điểm:</label>
+                      <select name="band_score_toeic_update" id="band_score_toeic_update" class="tm-form-control toeic">
+                        <option value="1.0 - 295">1 - 295</option>
+                        <option value="300 - 595">300 - 595</option>
+                        <option value="600 - 650">600 - 650</option>
+                        <option value="650+">650+</option>
+                      </select>
+                    </div>
+                    <div class="tm-form-group" id="band-score-group_pet" style="display: none;">
+                      <label for="band_score_pet_update">Band điểm:</label>
+                      <select name="band_score_pet_update" id="band_score_pet_update" class="tm-form-control pet">
+                        <option value="A1 - Căn bản">A1 - Căn bản</option>
+                        <option value="A2 - Sơ cấp">A2 - Sơ cấp</option>
+                        <option value="B1 - Trung cấp">B1 - Trung cấp</option>
+                        <option value="B2 - Trung cao cấp">B2 - Trung cao cấp</option>
+                        <option value="C1 - Cao cấp">C1 - Cao cấp</option>
+                        <option value="C2 - Thành thạo">C2 - Thành thạo</option>
+                      </select>
+                    </div>
+                    
+                    <div class="tm-form-group">
+                      <label for="start_date">Ngày bắt đầu:</label>
+                      <input type="date" name="start_date" id="start_date" class="tm-form-control" required />
+                    </div>
+                    <div class="tm-form-group">
+                      <label for="end_date">Ngày kết thúc:</label>
+                      <input type="date" name="end_date" id="end_date" class="tm-form-control" required />
+                    </div>
+
+                    <div class="tm-form-group">
+                      <label for="so_gio_hoc">Số giờ học 1 buổi:</label>
+                      <input type="number" name="so_gio_hoc" id="so_gio_hoc" class="tm-form-control" required />
+                    </div>
+
+                    <div class="tm-form-group">
+                      <label for="lessons_per_week">Chọn giờ học/tuần:</label>
+                      <div class="tm-form-control checkbox-group">
+                        <div class="day-hour-container">
+                          <label for="hour_hai">Thứ Hai:</label>
+                          <input type="time" id="hour_hai" name="hour_hai" >
+                          </div>
+                        
+                        <div class="day-hour-container">
+                          <span> Thứ Ba </span>
+                          <label for="hour_tuesday"></label>
+                          <input type="time" id="hour_ba" name="hour_ba">
+                        </div>
+                        
+                        <div class="day-hour-container">
+                          <span> Thứ Tư </span>
+                          <label for="hour_tuesday"></label>
+                          <input type="time" id="hour_tu" name="hour_tu" >
+                        </div>
+  
+                        <div class="day-hour-container">
+                          <span> Thứ Năm</span>
+                          <label for="hour_tuesday"></label>
+                          <input type="time" id="hour_nam" name="hour_nam">
+                        </div>
+  
+                        <div class="day-hour-container">
+                          <span> Thứ Sáu </span>
+                          <input type="time" id="hour_sau" name="hour_sau">
+                        </div>
+  
+                        <div class="day-hour-container">
+                          <span> Thứ Bảy </span>
+                          <input type="time" id="hour_bay" name="hour_bay">
+                        </div>
+                        <div class="day-hour-container">
+                          <span> Chủ nhật </span>
+                          <input type="time" id="hour_cn" name="hour_cn" >
+                        </div> 
+                      </div>
+                    </div>
+                   
+                    <div class="tm-form-group">
+                      <label for="course_fee">HỌC PHÍ:</label>
+                      <input type="text" name="course_fee" id="course_fee" class="tm-form-control" required />
+                    </div>
+  
+                    <div class="tm-form-group">
+                      <label for="description">MÔ TẢ:</label>
+                      <textarea rows="6" name="description" id="description" class="tm-form-control" required></textarea>
+                    </div>
+                    <button type="submit">Lưu</button>
+                    <button onclick="closeEditPopup()">Hủy</button>
+                </form>
+              </div> 
+                <div class="tm-list-item">
+                  <div class="tm-black-bg tm-list-item-text">
+                    <h3 class="tm-list-item-name"> {{ course[1] }}<span class="tm-list-item-price"> {{ course[0] }}</span></h3>
+                    <p class="tm-list-item-description">- Level {{ course[2] }}</p>
+                    <p class="tm-list-item-description">- Band điểm: {{ course[3] }}</p>
+                    <p class="tm-list-item-description">- Ngày bắt đầu: {{ course[4] }}</p>
+                    <p class="tm-list-item-description">- Ngày kết thúc : {{ course[7] }}</p>
+                    <p class="tm-list-item-description">- Số giờ học 1 buổi : {{ course[9] }}</p>
+                      <p class="tm-list-item-lesson_day">- Ngày học trong tuần:
+                        <div class = "lesson_day_time">
+                          {% for courseday in course_days %}
+                        {% if course[0]|int == courseday[0]|int %}
+                          <p>{{ courseday[1] }} {{ courseday[2] }}</p>
+                        {% endif %}
+                      {% endfor %}
+                        </div>
+                    </p>
+                  <p class="tm-list-item-description">- Học phí: {{ course[5] }}</p>
+                  {% if course[8] == None%}
+                    <p class="tm-list-item-description">- Giáo viên phụ trách: Chưa có</p>
+                  {% else %}
+                    <p class="tm-list-item-description">- Giáo viên phụ trách: {{ course[8] }}</p>
+                  {% endif %}
+                    <p class="tm-list-item-description">- Mô tả: {{ course[6] }}</p>
+                    
+                    <button data-course-id="{{ course[0] }}" class="delete-icon" onclick="confirmDelete('{{ course[0] }}')">
+                    <svg  xmlns="http://www.w3.org/2000/svg" width="35" height="40" fill="currentColor" class="bi bi-trash  delete-icon" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+                    </svg>
+                    </button>
+                    <div class="sua_course">
+                      <p  class="sua_course ">
+                        {% if course[8] == None%}
+                        <span onclick="openEditPopup('{{ course[0] }}', '{{ course[1]}}', '{{ course[2]}}', '{{ course[3]}}', '{{ course[4]}}', '{{ course[5]}}', '{{ course[6]}}', '{{ course[7]}}','-1', '{{ course[9]}}' )">Sửa khóa học</span>
+                        {% else %}
+                        <span onclick="openEditPopup('{{ course[0] }}', '{{ course[1]}}', '{{ course[2]}}', '{{ course[3]}}', '{{ course[4]}}', '{{ course[5]}}', '{{ course[6]}}', '{{ course[7]}}','{{ course[8]}}', '{{ course[9]}}')">Sửa khóa học</span>
+                        {% endif %}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="tm-black-bg tm-contact-text-container">
+                  <h2 class="tm-text-primary">Thông báo</h2>
+                  <p>Hiện chưa có khóa học nào, bạn hãy thêm khóa học mới</p>
+                </div>
+                {% endif %}   
+              <div class="hidden-form-update tm-black-bg tm-contact-form-container-update tm-align-right">
+                <form  method="POST" id="contact-form">
+                  <div class="tm-form-group">
+                    <label for="class_name">Tên khóa học:</label>
+                    <input type="text" name="class_name" id="class_name" class="tm-form-control" placeholder="Tên lớp học" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="class_level">Cấp độ:</label>
+                    <select name="class_level" id="class_level" class="tm-form-control" required>
+                      <option value="IELTS">IELTS</option>
+                      <option value="TOEIC">TOEIC</option>
+                      <option value="Tiếng Anh Cambridge">Tiếng Anh Cambridge</option>
+                    </select>
+                  </div>
+                  <div class="tm-form-group" id="band-score-group_ielts" >
+                    <label for="band_score_ielts">Band điểm:</label>
+                    <select name="band_score" id="band_score_ielts" class="tm-form-control ielts">
+                      <option value="1.0 - 3.5">1.0 - 3.5</option>
+                      <option value="4.0 - 4.5">4.0 - 4.5</option>
+                      <option value="5.0 - 5.5">5.0 - 5.5</option>
+                      <option value="6.0 - 6.5">6.0 - 6.5</option>
+                      <option value="6.5 - 7.0">6.5 - 7.0</option>
+                      <option value="7.0+">7.0+</option>
+                    </select>
+                  </div>
+                  <div class="tm-form-group" id="band-score-group_toeic" style="display: none;">
+                    <label for="band_score">Band điểm:</label>
+                    <select name="band_score" id="band_score_toeic" class="tm-form-control toeic">
+                      <option value="1.0 - 295">1 - 295</option>
+                      <option value="300 - 595">300 - 595</option>
+                      <option value="600 - 650">600 - 650</option>
+                      <option value="650+">650+</option>
+                    </select>
+                  </div>
+                  <div class="tm-form-group" id="band-score-group_pet" style="display: none;">
+                    <label for="band_score_pet">Band điểm:</label>
+                    <select name="band_score" id="band_score_pet" class="tm-form-control pet">
+                      <option value="A1 - Căn bản">A1 - Căn bản</option>
+                      <option value="A2 - Sơ cấp">A2 - Sơ cấp</option>
+                      <option value="B1 - Trung cấp">B1 - Trung cấp</option>
+                      <option value="B2 - Trung cao cấp">B2 - Trung cao cấp</option>
+                      <option value="C1 - Cao cấp">C1 - Cao cấp</option>
+                      <option value="C2 - Thành thạo">C2 - Thành thạo</option>
+                    </select>
+                  </div>
+                  
+                  <div class="tm-form-group">
+                    <label for="start_date">Ngày bắt đầu:</label>
+                    <input type="date" name="start_date" id="start_date" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="end_date">Ngày kết thúc:</label>
+                    <input type="date" name="end_date" id="end_date" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="so_gio_hoc">Số giờ học 1 buổi:</label>
+                    <input type="number" name="so_gio_hoc" id="so_gio_hoc" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="lessons_per_week">Chọn giờ học/tuần:</label>
+                    <div class="tm-form-control checkbox-group">
+                      <div class="day-hour-container">
+                        <label for="hour_hai">Thứ Hai:</label>
+                        <input type="time" id="hour_hai" name="hour_hai" >
+                        </div>
+                      
+                      <div class="day-hour-container">
+                        <span> Thứ Ba </span>
+                        <label for="hour_tuesday"></label>
+                        <input type="time" id="hour_ba" name="hour_ba">
+                      </div>
+                      
+                      <div class="day-hour-container">
+                        <span> Thứ Tư </span>
+                        <label for="hour_tuesday"></label>
+                        <input type="time" id="hour_tu" name="hour_tu" >
+                      </div>
+
+                      <div class="day-hour-container">
+                        <span> Thứ Năm</span>
+                        <label for="hour_tuesday"></label>
+                        <input type="time" id="hour_nam" name="hour_nam">
+                      </div>
+
+                      <div class="day-hour-container">
+                        <span> Thứ Sáu </span>
+                        <input type="time" id="hour_sau" name="hour_sau">
+                      </div>
+
+                      <div class="day-hour-container">
+                        <span> Thứ Bảy </span>
+                        <input type="time" id="hour_bay" name="hour_bay">
+                      </div>
+                      <div class="day-hour-container">
+                        <span> Chủ nhật </span>
+                        <input type="time" id="hour_cn" name="hour_cn" >
+                      </div> 
+                    </div>
+                  </div>
+                  
+                  <div class="tm-form-group">
+                    <label for="course_fee">HỌC PHÍ:</label>
+                    <input type="text" name="course_fee" id="course_fee" class="tm-form-control" required />
+                  </div>
+                  <div class="tm-form-group">
+                    <label for="description">MÔ TẢ:</label>
+                    <textarea rows="6" name="description" id="description" class="tm-form-control" required></textarea>
+                  </div>
+                  <div>
+                    <button type="submit" class="tm-btn-primary tm-align-right">Thêm khóa học</button>
+                  </div>
+                </form>
+                </div>
+              </div>
+
+            </div> 
+          </div>
+     
+        </main>
+      </div>    
+    </div>
+    
+  </div>
+    
+
+
+  
+ 
+</body>
+</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const updateCourseLink = document.querySelector(".update_course");
+    const formContainer = document.querySelector(".tm-contact-form-container");
+    let formVisible = false; 
+  
+    
+    updateCourseLink.addEventListener("click", function(event) {
+      event.preventDefault(); 
+      if (formVisible) {
+        formContainer.classList.add("hidden-form"); 
+      } else {
+        formContainer.classList.remove("hidden-form"); 
+      }
+      formVisible = !formVisible; 
+    });
+  });
+
+  
+
+   
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const courseFeeInput = document.getElementById("course_fee");
+
+    courseFeeInput.addEventListener("input", function() {
+      let value = courseFeeInput.value;
+
+      // Loại bỏ tất cả ký tự không phải số và dấu phẩy
+      value = value.replace(/[^0-9,]/g, '');
+
+      value = Number(value.split(",").join('')).toLocaleString('vi-VN');
+      courseFeeInput.value = value;
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+  const classLevelSelect = document.getElementById("class_level");
+  const bandScoreGroupIELTS = document.getElementById("band-score-group_ielts");
+  const bandScoreGroupTOEIC = document.getElementById("band-score-group_toeic");
+  const bandScoreGroupPET = document.getElementById("band-score-group_pet")
+  classLevelSelect.addEventListener("change", function() {
+  const selectedValue = classLevelSelect.value;
+
+    if (selectedValue === "IELTS") {
+      bandScoreGroupIELTS.style.display = "block";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "none";
+
+    
+    } else if (selectedValue === "TOEIC") {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "block";
+      bandScoreGroupPET.style.display = "none";
+    }else if (selectedValue === "Tiếng Anh Cambridge"){
+
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "block";
+      console.log(bandScoreGroupPET.style.display );
+    } else {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "none";
+
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const classLevelSelect = document.getElementById("class_level_update");
+  const bandScoreGroupIELTS = document.getElementById("band-score-group_ielts_update");
+  const bandScoreGroupTOEIC = document.getElementById("band-score-group_toeic_update");
+  const bandScoreGroupPET = document.getElementById("band-score-group_pet_update");
+
+  classLevelSelect.addEventListener("change", function() {
+  const selectedValue = classLevelSelect.value;
+
+  if (selectedValue === "IELTS") {
+      bandScoreGroupIELTS.style.display = "block";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "none";
+    } else if (selectedValue === "TOEIC") {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "block";
+      bandScoreGroupPET.style.display = "none";
+    }else if (selectedValue === "Tiếng Anh Cambridge"){
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "block";
+    } else {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "none";
+
+    }
+  });
+});
+
+
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+  }
+
+  function confirmDelete(courseId) {
+  const confirmation = confirm("Bạn có chắc chắn muốn xóa khóa học này?");
+  if (confirmation) {
+    // Nếu người dùng chọn "OK" trong hộp thoại xác nhận, thì mới thực hiện xóa
+    deleteCourse(courseId);
+  }
+}
+
+function deleteCourse(courseId) {
+  fetch("/quanly/capnhatkhoahoc", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ courseId: courseId }),
+  })
+  .then((response) => {
+    if (response.ok) {
+      // Trang tự tải lại sau khi xóa thành công
+      location.reload();
+    } else {
+      console.error("Request failed with status:", response.status);
+    }
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+}
+
+var editingCourseId = null; // Khởi tạo biến editingCourseId và đặt giá trị ban đầu là null
+
+function openEditPopup(courseId, name, level, band, start, fee, des, end, teacher_id, so_gio_hoc) {
+    var scrollPosition = window.innerHeight / 3;
+    window.scrollTo(0, scrollPosition);
+    const classLevelSelect = document.getElementById("class_level");
+    editingCourseId = courseId;
+    document.getElementById("edit-popup").style.display = "block";
+    var editPopup = document.getElementById("edit-popup");
+    var courseIdPlaceholder = editPopup.querySelector("#courseIdPlaceholder"); 
+    var name_course = editPopup.querySelector("#class_name"); // Lấy thẻ <strong> có id "courseIdPlaceholder"
+    name_course.value= name;
+    courseIdPlaceholder.textContent = courseId ;
+    editPopup.querySelector("#course_fee").value =fee; 
+    editPopup.querySelector("#end_date").value = end; 
+    editPopup.querySelector("#start_date").value = start; 
+    editPopup.querySelector("#description").value =des; 
+    editPopup.querySelector("#course_id").value = courseId; 
+    editPopup.querySelector("#so_gio_hoc").value = so_gio_hoc; 
+
+    const bandScoreGroupIELTS = document.getElementById("band-score-group_ielts_update");
+    const bandScoreGroupTOEIC = document.getElementById("band-score-group_toeic_update");
+    const bandScoreGroupPET = document.getElementById("band-score-group_pet_update");
+
+    classLevelSelect.addEventListener("change", function() {
+    const selectedValue = classLevelSelect.value;
+    if (selectedValue === "IELTS") {
+      bandScoreGroupIELTS.style.display = "block";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "none";
+
+    } 
+    else if (selectedValue === "TOEIC") {
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "block";
+      bandScoreGroupPET.style.display = "none";
+
+    }else{  
+      bandScoreGroupIELTS.style.display = "none";
+      bandScoreGroupTOEIC.style.display = "none";
+      bandScoreGroupPET.style.display = "block";
+    }
+    
+  
+
+
+});
+}
+
+function closeEditPopup() {
+    editingCourseId = null;
+    document.getElementById("edit-popup").style.display = "none";
+}
+
+
+
+</script>
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+
+
+
+  
+
+
+
+
+  
+

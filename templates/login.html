@@ -1,0 +1,31 @@
+<head> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+ <body>
+<div class="parent clearfix">
+    <div class="bg-illustration">
+      <div class="burger-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="login">
+      <div class="container">
+        <h1>ĐĂNG NHẬP</h1>
+        <div class="login-form">
+            <form method="POST">
+                <input type="text" name="tendangnhap" placeholder="Tên đăng nhập">
+                <input type="password" name="password" placeholder="Mật khẩu">
+            <button type="submit">ĐĂNG NHẬP</button>
+            {% if error %}
+            <div style = "color: red;" class = "error-message" >{{ error }}</div>
+        {% endif %}
+          </form>
+        </div>
+    
+      </div>
+      </div>
+  </div>
+</body>

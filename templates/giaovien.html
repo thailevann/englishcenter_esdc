@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+
+  <!-- slider stylesheet -->
+  <!-- slider stylesheet -->
+  <!-- slider stylesheet -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+<!-- bootstrap core css -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}" />
+
+<!-- fonts style -->
+<link href="https://fonts.googleapis.com/giaovien?family=Roboto:400,700&display=swap" rel="stylesheet" />
+<!-- Custom styles for this template -->
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+<!-- responsive style -->
+<link href="{{ url_for('static', filename='css/responsive.css') }}" rel="stylesheet" />
+
+
+ 
+</head>
+
+<body>
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+         
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav  ">
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('logout') }}"> Đăng xuất </a>
+                </li>
+              
+              </ul>
+             
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+  </div>
+
+  <!-- how section -->
+  <section class="how_section layout_padding">
+    <div class="heading_container">
+      <h2>
+        Xin chào giáo viên
+      </h2>
+    </div>
+    <div class="how_container">
+
+      <div class="box">
+        <a href="{{ url_for('dangkylichday') }}"> 
+        <div class="img-box">
+          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"/></svg>
+        </div>
+        <div class="detail-box">
+          <h5>
+            Đăng ký lịch dạy
+          </h5>
+        </div>
+        </a>
+      </div>
+      <div class="box">
+        <a href="{{ url_for('khoahocdangky') }}"> 
+        <div class="img-box">
+          <?xml version="1.0" encoding="UTF-8"?>
+          <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512"><path d="M20,0H5C3.35,0,2,1.35,2,3V21c0,1.65,1.35,3,3,3H22V2c0-1.1-.9-2-2-2Zm0,18H8V2h12V18ZM5,2h1V18h-1c-.35,0-.69,.06-1,.17V3c0-.55,.45-1,1-1Zm0,20c-.55,0-1-.45-1-1s.45-1,1-1h15v2H5Zm6.49-6.98l.71-2h3.59l.71,2h2.12l-3.22-9.02c-.22-.6-.77-.99-1.41-.99s-1.19,.39-1.41,1l-3.22,9.02h2.12Zm2.51-7.03l1.08,3.03h-2.16l1.08-3.03Z"/></svg>
+        </div>
+        <div class="detail-box">
+          <h5>
+            Khóa học đã đăng ký
+          </h5>
+        </div>
+        </a>
+      </div>
+    </div>
+    
+  </section>
+
+  
+  
+</body>
+
+</html>
