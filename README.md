@@ -1,7 +1,7 @@
 # Quản lý trung tâm tiếng anh
 Phân quyền giáo viên, quản lý
 - Giáo viên: Đăng ký lịch dạy, Xem khóa học đã đăng ký
-- Quản lý: Thêm xóa sửa giáo viên, xem xóa sửa khóa học, Tạo lịch dạy tự động từ thông tin lịch dạy mà giáo viên đăng ký
+- Quản lý: Thêm xóa sửa giáo viên, Thêm xóa sửa khóa học, Tạo lịch dạy tự động từ thông tin lịch dạy mà giáo viên đăng ký
 # Hướng dẫn chạy code
 Những hướng dẫn dưới đây sẽ giúp bạn có được một bản sao của dự án và chạy nó trên máy tính cá nhân của bạn để phát triển và kiểm thử.
 Để triển khai dự án, bạn có thể tuân thủ các bước sau:
